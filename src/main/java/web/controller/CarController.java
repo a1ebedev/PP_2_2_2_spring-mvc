@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.service.CarService;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/cars")
 public class CarController {
@@ -20,13 +18,8 @@ public class CarController {
     }
 
     @GetMapping
-    public String index(@RequestParam(name = "count", required = false) String count, Model model) {
-        if (count != null && Integer.parseInt(count) < carService.listCars().size()) {
-            model.addAttribute("cars", carService.listCars(Integer.parseInt(count)));
-        } else {
-            model.addAttribute("cars", carService.listCars());
-        }
-
+    public String index(@RequestParam(name = "count", required = false, defaultValue = "0") int count, Model model) {
+        model.addAttribute("cars", carService.listCars(count));
         return "cars";
     }
 }
